@@ -1,9 +1,19 @@
 // import { observable, computed, action, decorate, autorun, reaction } from "mobx";
 import * as mobx from "mobx";
-import json from "json-mobx";
+// import json from "json-mobx";
 
-require("./stores/store.js");
+import GlobalStore from "./stores/store.js";
 
+console.log(GlobalStore);
+GlobalStore.substores.NumberStore.currentNumber = 0;
+GlobalStore.substores.NumberStore.add();
+GlobalStore.substores.NumberStore.add();
+GlobalStore.substores.NumberStore.add();
+console.log("Done adding!\nReseting!");
+GlobalStore.resetState();
+console.log(GlobalStore.substores.NumberStore.currentNumber);
+
+/*
 class Timer {
   constructor() {
     this.start = Date.now();

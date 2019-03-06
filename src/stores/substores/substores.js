@@ -17,6 +17,23 @@ import _ from "lodash";
 *   They are instantiated and exported at the end of this file. You Must Only instantiate a substore once in an entire application!
 * */
 
+// NumberStore
+class NumberStore {
+  constructor() {
+    // @observable
+    this.currentNumber = 2;
+  }
+  // @action
+  add() {
+    this.currentNumber++;
+    console.log("DEBUG:", this.currentNumber);
+  }
+}
+decorate(NumberStore, {
+  currentNumber: observable,
+  add: action
+});
+
 // UiStore
 class UiStore {
   constructor() {
@@ -40,14 +57,14 @@ class UndoStore {
   pushSnapshot(snap) {
     if (snap) {
       this.snapshots.unshift(snap);
-      console.log(this.snapshots[0].header, "the previous Color is stored here");
+      console.log(this.snapshots[0], "pushed");
     } else console.log("undefined snap");
   }
 
   // @action
   popSnapshot() {
     this.snapshots.shift();
-    console.log(this.snapshots[0].header, "after resetting the state, the previous snap, before the one that was just reset, is stored here");
+    console.log(this.snapshots[0], "popped");
   }
 }
 decorate(UndoStore, {
@@ -57,6 +74,7 @@ decorate(UndoStore, {
 });
 
 export const subStores = [
+  new NumberStore(),
   new UndoStore(),
   new UiStore()
 ];

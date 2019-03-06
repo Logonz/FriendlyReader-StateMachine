@@ -1,7 +1,7 @@
 import { observable, computed, action, reaction, when, decorate } from "mobx";
 import _ from "lodash";
 import { snapshotModel, resetSnapshot } from "./methods/snapshot";
-import { subStores } from "./substores/substores";
+import { subStores } from "./substores/substores.js";
 
 import { mapStores } from "./MobxUtils";
 
@@ -20,6 +20,7 @@ class GlobalStore {
       if (snapshot && UiStore.autoSaveDrafts) {
         UndoStore.pushSnapshot(snapshot);
         UiStore.displayUndo = true;
+        console.log("snapshot saved!", snapshot);
         setTimeout(() => {
           // Api.saveDraft(snapshot);
         }, 12000);
