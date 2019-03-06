@@ -38,6 +38,11 @@ class GlobalStore {
       () => UndoStore.snapshots.length > 1,
       bool => (UiStore.displayUndo = bool)
     ); // or bind reactions to and from the substores
+
+    /* reaction(
+      () => this.substores.NumberStore.currentNumber,
+      currentNumber => console.log(this.substores.NumberStore.currentNumber)
+    ); */
   }
 
   resetState() {
