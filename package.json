@@ -1,5 +1,5 @@
 {
-  "name": "webpack_test",
+  "name": "Mobx-State-machine",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -9,7 +9,7 @@
     "build-prod": "webpack --mode production"
   },
   "keywords": [],
-  "author": "",
+  "author": "David Holmstedt - Logon",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^5.13.0",
@@ -22,7 +22,6 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "json-mobx": "^0.7.0",
     "lodash": "^4.17.11",
     "mobx": "^5.9.0"
   }
