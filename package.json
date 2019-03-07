@@ -1,7 +1,7 @@
 {
   "name": "Mobx-State-machine",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A generic state-machine for TeCST and Friendlyreader tools from LiU University.",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
