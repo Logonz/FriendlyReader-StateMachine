@@ -17,22 +17,8 @@ import _ from "lodash";
 *   They are instantiated and exported at the end of this file. You Must Only instantiate a substore once in an entire application!
 * */
 
-// NumberStore
-class NumberStore {
-  constructor() {
-    // @observable
-    this.currentNumber = 2;
-  }
-  // @action
-  add() {
-    this.currentNumber++;
-    console.log("DEBUG:", this.currentNumber);
-  }
-}
-decorate(NumberStore, {
-  currentNumber: observable,
-  add: action
-});
+// Stores
+import NumberStore from "./NumberStore.js";
 
 // UiStore
 class UiStore {
