@@ -5,6 +5,7 @@ export default class NumberStore {
   constructor() {
     // @observable
     this.currentNumber = 2;
+    // reaction(() => this.currentNumber, console.log(this.currentNumber));
   }
   // @action
   add() {

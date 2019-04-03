@@ -19,6 +19,7 @@ import _ from "lodash";
 
 // Stores
 import NumberStore from "./NumberStore.js";
+import TextStore from "./TextStore.js";
 
 // UiStore
 class UiStore {
@@ -40,6 +41,15 @@ class UndoStore {
   }
 
   // @action
+  lastSnapshot() {
+    if (this.snapshots.length > 0) {
+      return this.snapshots[0];
+    } else {
+      return [];
+    }
+  }
+
+  // @action
   pushSnapshot(snap) {
     if (snap) {
       this.snapshots.unshift(snap);
@@ -56,11 +66,13 @@ class UndoStore {
 decorate(UndoStore, {
   pushSnapshot: action,
   popSnapshot: action,
-  snapshots: observable
+  snapshots: observable,
+  lastSnapshot: action
 });
 
 export const subStores = [
   new NumberStore(),
-  new UndoStore(),
-  new UiStore()
+  new TextStore(),
+  new UndoStore()
+  // new UiStore()
 ];
