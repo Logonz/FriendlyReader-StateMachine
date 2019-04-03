@@ -1,18 +1,43 @@
 // import { observable, computed, action, decorate, autorun, reaction } from "mobx";
 import * as mobx from "mobx";
-// import json from "json-mobx";
+import _ from "lodash";
 
 import GlobalStore from "./stores/store.js";
+// import json from "json-mobx";
+
+function DebugAdd() {
+  console.error("ABS", GlobalStore.substores.NumberStore.currentNumber);
+  GlobalStore.substores.NumberStore.add();
+  console.error("ABS", GlobalStore.substores.NumberStore.currentNumber);
+}
 
 console.log(GlobalStore);
-GlobalStore.substores.NumberStore.currentNumber = 0;
-GlobalStore.substores.NumberStore.add();
-GlobalStore.substores.NumberStore.add();
-GlobalStore.substores.NumberStore.add();
-console.log("Done adding!\nReseting!");
-GlobalStore.resetState();
-console.log(GlobalStore.substores.NumberStore.currentNumber);
 
+console.log("VAL", GlobalStore.substores.NumberStore.currentNumber);
+GlobalStore.substores.NumberStore.currentNumber = 0;
+// GlobalStore.substores.TextStore.currentText = "Test";
+DebugAdd();
+// console.log("DONE!1", _.cloneDeep(GlobalStore.substores.TextStore), _.cloneDeep(GlobalStore.substores.NumberStore));
+DebugAdd();
+GlobalStore.substores.TextStore.setText("text: string");
+GlobalStore.substores.TextStore.setText("text: string2");
+// console.log("DONE!2", _.cloneDeep(GlobalStore.substores.TextStore), _.cloneDeep(GlobalStore.substores.NumberStore));
+GlobalStore.substores.NumberStore.add();
+// GlobalStore.substores.NumberStore.add();
+console.log("Done adding!\nReseting!");
+console.log("DONE!3", _.cloneDeep(GlobalStore.substores.TextStore), _.cloneDeep(GlobalStore.substores.NumberStore));
+// GlobalStore.resetState();
+// GlobalStore.resetState();
+// console.log("DONE!", GlobalStore.substores.UndoStore);
+
+/*
+var test = { number: 10 };
+
+var map = new Map().set("testvalue", test);
+console.log(map.get("testvalue"));
+test.number = 5;
+console.log(map.get("testvalue"));
+*/
 /*
 class Timer {
   constructor() {
