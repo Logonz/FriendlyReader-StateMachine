@@ -5,6 +5,11 @@ module.exports = {
   output: {
     filename: "build.main.js",
     path: path.resolve(__dirname, "dist")
+  },
+  node: {
+    fs: "empty",
+    net: "empty",
+    tls: "empty"
   }
 };
 

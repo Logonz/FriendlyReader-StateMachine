@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "mobx": "^5.9.0"
+    "mobx": "^5.9.0",
+    "request": "^2.88.0"
   }
 }
