@@ -14,11 +14,11 @@ function DebugAdd() {
 console.log(GlobalStore);
 const isInObservableArray = (array, item, id) => mobx.isObservableArray(array) && !!array.find(item => item.id === id);
 
-// GlobalStore.substores.SapisStore.analyzeText("Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.");
-console.log("TEST", mobx.isObservableProp(GlobalStore.substores["NumberStore"], "currentNumber"));
+GlobalStore.substores.SapisStore.analyzeText("Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.");
+// console.log("TEST", mobx.isObservableProp(GlobalStore.substores["NumberStore"], "currentNumber"));
 
-GlobalStore.substores.NumberStore.currentNumber = 0;
-console.log("VAL", GlobalStore.substores.NumberStore.currentNumber);
+// GlobalStore.substores.NumberStore.currentNumber = 0;
+// console.log("VAL", GlobalStore.substores.NumberStore.currentNumber);
 
 /* // GlobalStore.substores.TextStore.currentText = "Test";
 DebugAdd();
