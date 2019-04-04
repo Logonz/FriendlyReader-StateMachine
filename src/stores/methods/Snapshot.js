@@ -22,20 +22,22 @@ export function snapshotModel(substores, lastSnapshot) {
 
       // Diff the two objects (Need to check how deep it checks)
       let changed = getObjectDiff(lastFullSnapshot[subStore], substores[subStore]);
-      console.log("CHANGED", changed);
+      if (!_.isEmpty(changed)) { // Could skip this, but nice to only get logging when something actually happens.
+        console.log("CHANGED", changed);
 
-      // Run through all changed values compared to the old snapshot
-      for (const key in changed) {
-        let storeKey = changed[key];
-        let newVal = substores[subStore][storeKey];
-        let oldVal = lastFullSnapshot[subStore][storeKey];
-        if (newVal !== oldVal) { // Jag höll på att försöka lista ut en check från föregående state
-          console.log("Changed value", storeKey, oldVal, "=>", newVal, "\nlastFullSnapshot", lastFullSnapshot, "currentState", substores[subStore]);
-          if (!newSnapshot[subStore]) {
-            newSnapshot[subStore] = {};
-            newSnapshot[subStore][storeKey] = newVal;
-          } else {
-            newSnapshot[subStore][storeKey] = newVal;
+        // Run through all changed values compared to the old snapshot
+        for (const key in changed) {
+          let storeKey = changed[key];
+          let newVal = substores[subStore][storeKey];
+          let oldVal = lastFullSnapshot[subStore][storeKey];
+          if (newVal !== oldVal) { // Jag höll på att försöka lista ut en check från föregående state
+            console.log("Changed value", storeKey, oldVal, "=>", newVal, "\nlastFullSnapshot", lastFullSnapshot, "currentState", substores[subStore]);
+            if (!newSnapshot[subStore]) {
+              newSnapshot[subStore] = {};
+              newSnapshot[subStore][storeKey] = newVal;
+            } else {
+              newSnapshot[subStore][storeKey] = newVal;
+            }
           }
         }
       }

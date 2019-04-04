@@ -6,9 +6,9 @@ import GlobalStore from "./stores/store.js";
 // import json from "json-mobx";
 
 function DebugAdd() {
-  console.error("ABS", GlobalStore.substores.NumberStore.currentNumber);
+  console.error("ABS1", GlobalStore.substores.NumberStore.currentNumber);
   GlobalStore.substores.NumberStore.add();
-  console.error("ABS", GlobalStore.substores.NumberStore.currentNumber);
+  console.error("ABS2", GlobalStore.substores.NumberStore.currentNumber);
 }
 
 console.log(GlobalStore);
