@@ -55,9 +55,19 @@ class UndoStore {
 decorate(UndoStore, {
   pushSnapshot: action,
   popSnapshot: action,
-  snapshots: observable,
+  // snapshots: observable,
   lastSnapshot: action
 });
+
+export const subStores = [
+  new NumberStore(),
+  new TextStore(),
+  new SapisStore(),
+  new UndoStore()
+  // new UiStore()
+];
+
+/*
 
 export const subStores = {
   NumberStore: new NumberStore(),
@@ -66,8 +76,6 @@ export const subStores = {
   UndoStore: new UndoStore()
   // new UiStore()
 };
-
-/*
 // UiStore
 class UiStore {
   constructor() {
