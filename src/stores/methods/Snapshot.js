@@ -1,7 +1,6 @@
 import * as mobx from "mobx";
-import { getObjectDiff, mapStores } from "../MobxUtils";
+import { getObjectDiff } from "../MobxUtils";
 import _ from "lodash";
-// import GlobalStore from "../store.js";
 
 export function snapshotModel(substores, lastSnapshot) {
   console.log("Snapshot.js");
