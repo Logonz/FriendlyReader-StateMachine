@@ -59,13 +59,13 @@ decorate(UndoStore, {
   lastSnapshot: action
 });
 
-export const subStores = [
-  new NumberStore(),
-  new TextStore(),
-  new SapisStore(),
-  new UndoStore()
+export const subStores = {
+  NumberStore: new NumberStore(),
+  TextStore: new TextStore(),
+  SapisStore: new SapisStore(),
+  UndoStore: new UndoStore()
   // new UiStore()
-];
+};
 
 /*
 // UiStore
