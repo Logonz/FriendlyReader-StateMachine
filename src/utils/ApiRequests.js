@@ -1,6 +1,6 @@
 import req from "request";
 
-export function SAPISRequest(data, stillettOptions) {
+export function SAPISRequest(data, callback, stillettOptions) {
   var sendData = { options: stillettOptions + "\tLexicalMetrics()\tSurfaceMetrics()\tStructuralMetrics()",
     document: data };
   req.post({
@@ -14,6 +14,6 @@ export function SAPISRequest(data, stillettOptions) {
     body = JSON.parse(body);
 
     console.log(body);
-    return body;
+    callback(body);
   });
 }
