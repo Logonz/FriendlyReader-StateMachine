@@ -23,7 +23,7 @@ export default class SapisStore {
       if (!stillettOptions) { stillettOptions = "Feedback(-svo -pass2act -prox -quoteInv -split)"; }
       // Function(data) for callback, this.data modifies the state after the data is recived
       SAPISRequest(data, function(data) {
-        this.data = data;
+        this.data = { data: data, options: stillettOptions };
         this.requesting = false;
         this.lastrequestdate = Date.now();
       }.bind(this), stillettOptions);
