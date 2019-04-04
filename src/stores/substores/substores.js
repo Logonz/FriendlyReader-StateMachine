@@ -20,18 +20,7 @@ import _ from "lodash";
 // Stores
 import NumberStore from "./NumberStore.js";
 import TextStore from "./TextStore.js";
-
-// UiStore
-class UiStore {
-  constructor() {
-    this.displayUndo = false;
-    this.autoSaveDrafts = true;
-  }
-}
-decorate(UiStore, {
-  displayUndo: observable,
-  autoSaveDrafts: observable
-});
+import SapisStore from "./SapisStore.js";
 
 // Undostore
 class UndoStore {
@@ -53,7 +42,7 @@ class UndoStore {
   pushSnapshot(snap) {
     if (snap) {
       this.snapshots.unshift(snap);
-      console.log(this.snapshots[0], "pushed");
+      // console.log(this.snapshots[0], "pushed");
     } else console.log("undefined snap");
   }
 
@@ -73,6 +62,20 @@ decorate(UndoStore, {
 export const subStores = [
   new NumberStore(),
   new TextStore(),
+  new SapisStore(),
   new UndoStore()
   // new UiStore()
 ];
+
+/*
+// UiStore
+class UiStore {
+  constructor() {
+    this.displayUndo = false;
+    this.autoSaveDrafts = true;
+  }
+}
+decorate(UiStore, {
+  displayUndo: observable,
+  autoSaveDrafts: observable
+}); */
