@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A generic state-machine for TeCST and Friendlyreader tools from LiU University.",
   "private": true,
+  "main": "./dist/build.main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-dev": "webpack --mode development --devtool source-map",
@@ -24,6 +25,7 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "mobx": "^5.9.0",
+    "mobx-utils": "^5.2.0",
     "request": "^2.88.0"
   }
 }

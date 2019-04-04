@@ -1,4 +1,5 @@
-import { observable, computed, action, reaction, when, decorate } from "mobx";
+import { observable, computed, action, autorun, reaction, when, decorate, observe, observer } from "mobx";
+import { deepObserve } from "mobx-utils";
 import _ from "lodash";
 import { snapshotModel, resetSnapshot } from "./methods/snapshot";
 import { subStores } from "./substores/substores.js";
@@ -12,13 +13,36 @@ import { mapStores } from "./MobxUtils";
 class GlobalStore {
   constructor() {
     // @observable
+
     this.substores = mapStores(subStores); // After this global store class is instatiated via the constructor function,
-    this.lastSnapshot = _.cloneDeep(this.substores);
+    const disposer = deepObserve(this.substores, (change, path) => {
+      if (change.type === "update") {
+        let snap = {};
+        snap[path] = {};
+        snap[path][change["name"]] = change.newValue;
+        console.log(change, path, "\n", snap);
+        this.pushSnapshotAndSave(snap);
+      }
+    });
+    /* for (const k in this.substores) {
+      console.log(k);
+      let d = observable(this.substores[k], { deep: true });
+      reaction(() => this.substores[k], (d, reaction) => { console.log("G3", d, reaction); });
+    } */
+    // const obs = observable(this.substores);
+    // this.test = observable.array(subStores, { deep: true });
+    // this.lastSnapshot = _.cloneDeep(this.substores);
     // var { UndoStore } = this.substores; // you can even deconstruct the state immidiately after instantiation,
+    // reaction(() => this.substores, data => console.log("test"));
+    console.log(this.substores);
+    // autorun(() => { console.log("gg1", this.substores); });
+    // observe(this.substores, change => console.log("GG", change));
+    // const disposer = autorun(reaction => { console.log("gg2", reaction); });
+    // const component = observer(substores => { console.log("GG3"); });
 
     this.pushSnapshotAndSave = async snapshot => { //= async snapshot =>
       let { UndoStore } = this.substores;
-
+      console.log("push", snapshot);
       if (snapshot) { // && UiStore.autoSaveDrafts
         // console.log("TEST:", this.substores);
         UndoStore.pushSnapshot(snapshot);
@@ -30,10 +54,23 @@ class GlobalStore {
       // UndoStore.setLastFullSnapshot(this.substores);
     };
 
+    /*
+    reaction(() => this.test, (test, reaction) => {
+      console.log("TEST");
+      for (const r in reaction.observing) {
+        let react = reaction.observing[r];
+        console.log("REACT test", react.value, react);
+      }
+    });
+
     reaction(() => this.snapshot, (snapshot, reaction) => {
+      for (const r in reaction.observing) {
+        let react = reaction.observing[r];
+        console.log("REACT snapshot", react.value, react);
+      }
       this.pushSnapshotAndSave(snapshot);
       this.lastSnapshot = _.cloneDeep(this.substores);
-    }); // and bind reactions to the global actions below
+    }); // and bind reactions to the global actions below */
 
     // map the substores to this object
     // this.pushSnapshotAndSave(this.snapshot);
@@ -54,10 +91,10 @@ class GlobalStore {
       }
     }
     console.log(reactList); */
-    reaction(
+    /* reaction(
       () => this.substores,
       substores => console.log("REACT", this.substores.NumberStore)
-    );
+    ); */
   }
 
   resetState() {
@@ -106,14 +143,22 @@ class GlobalStore {
     );
   } */
 
+  /* get change() {
+    console.log("react change");
+    return this.substores;
+  }
+
   // @computed
   get snapshot() {
     return snapshotModel(this.substores, this.lastSnapshot);
-  }
+  } */
 }
+
 decorate(GlobalStore, {
   substores: observable,
-  snapshot: computed
+  // change: computed,
+  // snapshot: computed,
+  test: observable
 });
 
 export default new GlobalStore();
