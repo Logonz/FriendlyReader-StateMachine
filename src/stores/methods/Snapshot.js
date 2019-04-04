@@ -1,5 +1,7 @@
+import * as mobx from "mobx";
 import { getObjectDiff, mapStores } from "../MobxUtils";
 import _ from "lodash";
+// import GlobalStore from "../store.js";
 
 export function snapshotModel(substores, lastSnapshot) {
   console.log("Snapshot.js");
@@ -28,15 +30,20 @@ export function snapshotModel(substores, lastSnapshot) {
         // Run through all changed values compared to the old snapshot
         for (const key in changed) {
           let storeKey = changed[key];
-          let newVal = substores[subStore][storeKey];
-          let oldVal = lastFullSnapshot[subStore][storeKey];
-          if (newVal !== oldVal) { // Jag höll på att försöka lista ut en check från föregående state
-            console.log("Changed value", storeKey, oldVal, "=>", newVal, "\nlastFullSnapshot", lastFullSnapshot, "currentState", substores[subStore]);
-            if (!newSnapshot[subStore]) {
-              newSnapshot[subStore] = {};
-              newSnapshot[subStore][storeKey] = newVal;
-            } else {
-              newSnapshot[subStore][storeKey] = newVal;
+
+          // Only save a snapshot if the variable is an observable
+          if (mobx.isObservableProp(substores[subStore], storeKey)) {
+            console.log("LOGON OBS:", mobx.isObservableProp(substores[subStore], storeKey), storeKey);
+            let newVal = substores[subStore][storeKey];
+            let oldVal = lastFullSnapshot[subStore][storeKey];
+            if (newVal !== oldVal) { // Jag höll på att försöka lista ut en check från föregående state
+              console.log("Changed value", storeKey, oldVal, "=>", newVal, "\nlastFullSnapshot", lastFullSnapshot, "currentState", substores[subStore]);
+              if (!newSnapshot[subStore]) {
+                newSnapshot[subStore] = {};
+                newSnapshot[subStore][storeKey] = newVal;
+              } else {
+                newSnapshot[subStore][storeKey] = newVal;
+              }
             }
           }
         }
