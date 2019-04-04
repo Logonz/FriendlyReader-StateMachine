@@ -32,9 +32,9 @@ class GlobalStore {
 
     reaction(() => this.snapshot, (snapshot, reaction) => {
       this.pushSnapshotAndSave(snapshot);
-      // this.substores.UndoStore.setLastFullSnapshot(this.substores);
       this.lastSnapshot = _.cloneDeep(this.substores);
     }); // and bind reactions to the global actions below
+
     // map the substores to this object
     // this.pushSnapshotAndSave(this.snapshot);
 
