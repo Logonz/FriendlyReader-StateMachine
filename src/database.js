@@ -1,28 +1,24 @@
-// import { observable, computed, action, decorate, autorun, reaction } from "mobx";
-import * as mobx from "mobx";
-import _ from "lodash";
-
 import GlobalStore from "./stores/store.js";
-// import json from "json-mobx";
 
 export function getStore() {
-  return GlobalStore;
+  let store = new GlobalStore();
+  function DebugAdd() {
+    console.error("ABS1", store.substores.NumberStore.currentNumber);
+    store.substores.NumberStore.add();
+    console.error("ABS2", store.substores.NumberStore.currentNumber);
+  }
+  let data = "Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.";
+
+  // store.substores.SapisStore.analyzeText(data);
+
+  return store;
 }
 
-function DebugAdd() {
-  console.error("ABS1", GlobalStore.substores.NumberStore.currentNumber);
-  GlobalStore.substores.NumberStore.add();
-  console.error("ABS2", GlobalStore.substores.NumberStore.currentNumber);
-}
-
-console.log(GlobalStore);
-const isInObservableArray = (array, item, id) => mobx.isObservableArray(array) && !!array.find(item => item.id === id);
-
-GlobalStore.substores.SapisStore.analyzeText("Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.");
+// Old stuff
 // console.log("TEST", mobx.isObservableProp(GlobalStore.substores["NumberStore"], "currentNumber"));
 
-GlobalStore.substores.NumberStore.currentNumber = 0;
-DebugAdd();
+// GlobalStore.substores.NumberStore.currentNumber = 0;
+// GlobalStore.resetState();
 
 // console.log("VAL", GlobalStore.substores.NumberStore.currentNumber);
 

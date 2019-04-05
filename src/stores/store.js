@@ -10,28 +10,31 @@ import { mapStores } from "./MobxUtils";
  * This file is designed to funnel the global state of the application, accessible via the @observable substores object.
  */
 
-class GlobalStore {
+export default class GlobalStore {
   constructor() {
     // After this global store class is instatiated via the constructor function,
+    this.reseting = false;
+
     // @observable
     this.substores = mapStores(subStores);
+
     // Observe all values in the store
-    deepObserve(this.substores, (change, path) => {
-      if (change.type === "update") {
+    deepObserve(this.substores, (changeObject, storeName) => {
+      if (changeObject.type === "update" && !this.reseting) {
         let snap = {};
-        snap[path] = {};
-        snap[path][change["name"]] = change.newValue;
-        console.log(change, path, "\n", snap);
+        snap[storeName] = {};
+        snap[storeName][changeObject.name] = changeObject.oldValue;
+        console.log("DATA:", changeObject, "\nNAME:", storeName, "\nSNAPSHOT:", snap);
         this.pushSnapshotAndSave(snap);
       }
     });
 
-    this.pushSnapshotAndSave = async snapshot => {
+    this.pushSnapshotAndSave = snapshot => {
       let { UndoStore } = this.substores;
-      console.log("push", snapshot);
+
       if (snapshot) {
         UndoStore.pushSnapshot(snapshot);
-        console.log("snapshot saved!", snapshot);
+        console.info("snapshot saved!", snapshot, "\ncurrentState:", _.cloneDeep(this.substores));
       } else {
         console.log("no snapshot saved!", snapshot);
       }
@@ -39,13 +42,17 @@ class GlobalStore {
   }
 
   resetState() {
-    let { UndoStore, UiStore } = this.substores; // ColorStore
+    this.reseting = true;
+    let { UndoStore } = this.substores; // ColorStore
     let lastSnapshot = UndoStore.lastSnapshot();
     if (lastSnapshot) {
       // here is where the entire application state is reset based on the last snapshot, see Snapshot.js
+      console.log("reset state!\nSNAPSHOT:", lastSnapshot, "\nBEFORE:", _.cloneDeep(this.substores));
       this.substores = resetSnapshot(lastSnapshot, this.substores);
+      console.log("CURRENT:", _.cloneDeep(this.substores));
       UndoStore.popSnapshot();
     }
+    this.reseting = false;
   }
 
   /* @action
@@ -70,19 +77,25 @@ class GlobalStore {
     } else {
       return null;
     }
+  } */
+
+  // @computed
+  get Sapis() { // Named with uppercase due to it being more similar to a class reference
+    return this.substores.SapisStore;
+  }
+  // @computed
+  get text() {
+    return this.substores.TextStore.currentText;
   }
 
-  @computed
-  get searchedUsers() {
-    var { UiStore, UserStore } = this.substores;
-    return UserStore.users.filter(user =>
-      user.name.toLowerCase().includes(UiStore.searchText.toLowerCase())
-    );
-  } */
+  // @computed
+  set text(data) {
+    this.substores.TextStore.currentText = data;
+  }
 }
 
 decorate(GlobalStore, {
-  substores: observable
+  substores: observable,
+  Sapis: computed,
+  text: computed
 });
-
-export default new GlobalStore();
