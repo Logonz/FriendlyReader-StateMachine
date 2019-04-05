@@ -21,43 +21,7 @@ import _ from "lodash";
 import NumberStore from "./NumberStore.js";
 import TextStore from "./TextStore.js";
 import SapisStore from "./SapisStore.js";
-
-// Undostore
-class UndoStore {
-  // @observable snapshots = [];
-  constructor() {
-    this.snapshots = [];
-  }
-
-  // @action
-  lastSnapshot() {
-    if (this.snapshots.length > 0) {
-      return this.snapshots[0];
-    } else {
-      return [];
-    }
-  }
-
-  // @action
-  pushSnapshot(snap) {
-    if (snap) {
-      this.snapshots.unshift(snap);
-      // console.log(this.snapshots[0], "pushed");
-    } else console.log("undefined snap");
-  }
-
-  // @action
-  popSnapshot() {
-    this.snapshots.shift();
-    console.log(this.snapshots[0], "popped");
-  }
-}
-decorate(UndoStore, {
-  pushSnapshot: action,
-  popSnapshot: action,
-  // snapshots: observable,
-  lastSnapshot: action
-});
+import UndoStore from "./UndoStore.js";
 
 export const subStores = [
   new NumberStore(),
