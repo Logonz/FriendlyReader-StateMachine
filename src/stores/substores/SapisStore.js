@@ -20,7 +20,8 @@ export default class SapisStore {
   analyzeText(data, stillettOptions) {
     if (!this.requesting) {
       this.requesting = true;
-      if (!stillettOptions) { stillettOptions = "Feedback(-svo -pass2act -prox -quoteInv -split)"; }
+      if (!stillettOptions) { stillettOptions = "Feedback(-svo -pass2act -prox -quoteInv -split)" + "\tLexicalMetrics()\tSurfaceMetrics()\tStructuralMetrics()\tSynonyms"; }
+
       // Function(data) for callback, this.data modifies the state after the data is recived
       SAPISRequest(data, function(data) {
         this.data = { data: data, options: stillettOptions };
@@ -31,11 +32,18 @@ export default class SapisStore {
     }
     return false;
   }
+
+  // @action
+  synonyms(word) {
+    if (!(word in this.wordSynonyms)) {
+
+    }
+  }
 };
 
 // Decoration
 decorate(SapisStore, {
   data: observable,
   analyzeText: action,
-  sapisCallback: action
+  synonyms: action
 });
