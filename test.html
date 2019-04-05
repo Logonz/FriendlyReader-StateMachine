@@ -2,13 +2,18 @@
 <html>
   <head>
     <title>Getting Started</title>
-    <!--<script src="https://unpkg.com/lodash@4.16.6"></script>-->
+    <meta charset="UTF-8">
   </head>
   <body>
     <script src="dist/build.main.js"></script>
     <script>
       window.onload = function () {
-        console.log("HTML:", Database.initialize());
+        let GlobalStore = Database.initialize();
+        console.log("HTML:", GlobalStore);
+        let data = "Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.";
+
+        //GlobalStore.Sapis.analyzeText(data)
+        GlobalStore.text = data;
       };
     </script>
   </body>
