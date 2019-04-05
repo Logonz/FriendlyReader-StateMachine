@@ -11,12 +11,17 @@ export default class TextStore {
   // @action
   setText(text) {
     this.currentText = text;
-    console.log("DEBUG:", this.currentText);
+  }
+
+  // @action
+  getText() {
+    return this.currentText;
   }
 };
 
 // Decoration
 decorate(TextStore, {
   currentText: observable,
-  setText: action
+  setText: action,
+  getText: action
 });
