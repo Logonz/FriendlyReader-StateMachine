@@ -21,13 +21,13 @@ import _ from "lodash";
 import NumberStore from "./NumberStore.js";
 import TextStore from "./TextStore.js";
 import SapisStore from "./SapisStore.js";
-import UndoStore from "./UndoStore.js";
+import WordStore from "./WordStore.js";
 
 export const subStores = [
   new NumberStore(),
   new TextStore(),
   new SapisStore(),
-  new UndoStore()
+  new WordStore()
   // new UiStore()
 ];
 

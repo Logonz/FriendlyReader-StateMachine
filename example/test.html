@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <script src="../dist/build.main.js"></script>
+    <script src="./Store/WordStore.js"></script>
+    <script src="./Store/SynonymStore.js"></script>
+    <script>
+    var GlobalStore=null;
+      window.onload = function () {
+
+        GlobalStore = Database.initialize();
+        GlobalStore.addStore("WordTest", new WordStore())
+        GlobalStore.WordTest.setWord(1, "test");
+        GlobalStore.WordTest.setWord(1, "test2");
+        GlobalStore.WordTest.setWord(1, "test3");
+        GlobalStore.WordTest.setWord(2, "Tjo")
+
+        //SHOULD NEVER REALLY BE USED!
+        GlobalStore.removeStore("WordTest");
+
+        console.log("HTML:", GlobalStore);
+        let data = "Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.";
+
+
+        /*test = new SynonymStore();
+        GlobalStore.addStore("Symstore", test)
+        GlobalStore.Symstore.analyzeText(data);*/
+
+        //GlobalStore.text = data;
+        //Database.runTests(GlobalStore);
+
+      };
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 import { observable, computed, action, decorate, reaction, when } from "mobx";
 
 // Undostore
-export default class UndoStore {
+class UndoStore {
   // @observable snapshots = [];
   constructor() {
     this.snapshots = [];
@@ -36,3 +36,5 @@ decorate(UndoStore, {
   // snapshots: observable,
   lastSnapshot: action
 });
+
+export default new UndoStore();

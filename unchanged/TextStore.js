@@ -4,7 +4,7 @@ import { observable, computed, action, decorate, reaction, when } from "mobx";
 export default class TextStore {
   constructor() {
     // @observable
-    this.currentText = "UNSET-STRING";
+    this.currentText = {};
 
     // reaction(() => this.currentText, console.log(this.currentText));
   }
