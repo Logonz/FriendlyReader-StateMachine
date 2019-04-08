@@ -1,10 +1,8 @@
-import { observable, computed, action, autorun, reaction, when, decorate, observe, observer } from "mobx";
+import * as mobx from "mobx";
 import { deepObserve } from "mobx-utils";
 import _ from "lodash";
-import { snapshotModel, resetSnapshot } from "./methods/snapshot";
-import { subStores } from "./substores/substores.js";
-
-import { mapStores } from "./MobxUtils";
+import { resetSnapshot } from "./methods/snapshot";
+import UndoStore from "./UndoStore.js";
 
 /**
  * This file is designed to funnel the global state of the application, accessible via the @observable substores object.
@@ -15,12 +13,17 @@ export default class GlobalStore {
     // After this global store class is instatiated via the constructor function,
     this.reseting = false;
 
+    this.mobx = mobx;
+
     // @observable
-    this.substores = mapStores(subStores);
+    this.substores = {};
 
     // Observe all values in the store
-    deepObserve(this.substores, (changeObject, storeName) => {
-      if (changeObject.type === "update" && !this.reseting) {
+    this.dispatch = deepObserve(this.substores, (changeObject, storeName) => {
+      // We do not want snapshot on type ADD due to it being an inital state.
+      // this.reseting is a way to hinder the function from recording snapshot when reseting the State
+      // storename !== "" do not snapshot the addition or removal of stores.
+      if (changeObject.type === "update" && !this.reseting && storeName !== "") {
         let snap = {};
         snap[storeName] = {};
         snap[storeName][changeObject.name] = changeObject.oldValue;
@@ -30,8 +33,6 @@ export default class GlobalStore {
     });
 
     this.pushSnapshotAndSave = snapshot => {
-      let { UndoStore } = this.substores;
-
       if (snapshot) {
         UndoStore.pushSnapshot(snapshot);
         console.info("snapshot saved!", snapshot, "\ncurrentState:", _.cloneDeep(this.substores));
@@ -43,7 +44,6 @@ export default class GlobalStore {
 
   resetState() {
     this.reseting = true;
-    let { UndoStore } = this.substores; // ColorStore
     let lastSnapshot = UndoStore.lastSnapshot();
     if (lastSnapshot) {
       // here is where the entire application state is reset based on the last snapshot, see Snapshot.js
@@ -53,6 +53,26 @@ export default class GlobalStore {
       UndoStore.popSnapshot();
     }
     this.reseting = false;
+  }
+
+  addStore(name, object) {
+    if (!this.substores[name]) {
+      this.substores[name] = object;
+      this[name] = this.substores[name];
+      console.log("Added store: ", name, object);
+      return true;
+    }
+    console.error("Store with name already exists!", name);
+    return false;
+  }
+
+  //
+  removeStore(name) {
+    if (this.substores[name]) {
+      this[name] = null;
+      this.substores[name] = null;
+      console.log("Removed store with name: ", name);
+    }
   }
 
   /* @action
@@ -78,24 +98,8 @@ export default class GlobalStore {
       return null;
     }
   } */
-
-  // @computed
-  get Sapis() { // Named with uppercase due to it being more similar to a class reference
-    return this.substores.SapisStore;
-  }
-  // @computed
-  get text() {
-    return this.substores.TextStore.currentText;
-  }
-
-  // @computed
-  set text(data) {
-    this.substores.TextStore.currentText = data;
-  }
 }
 
-decorate(GlobalStore, {
-  substores: observable,
-  Sapis: computed,
-  text: computed
+mobx.decorate(GlobalStore, {
+  substores: mobx.observable
 });
