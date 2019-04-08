@@ -17,13 +17,17 @@ export function SAPISRequest(data, callback, stillettOptions) {
     res.setEncoding("utf8");
     console.log("SAPIS REQUEST:\nStatusCode:", res.statusCode, "\nHeaders:", res.headers);
     var data = [];
-
+    let body = "";
     res.on("data", function(chunk) {
       data.push(chunk);
     }).on("end", function() {
-      let body = JSON.parse(data[0]);
-      console.log("REQUEST COMPLETE:\n", body);
-      callback(body);
+      body = JSON.parse(data[0]);
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        console.log("REQUEST SUCCESS:\n", body);
+        callback(body);
+      } else {
+        console.error("SAPIS REQUEST ERROR:\n", body);
+      }
     });
   });
 
