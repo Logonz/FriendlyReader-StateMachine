@@ -13,8 +13,6 @@ export default class GlobalStore {
     // After this global store class is instatiated via the constructor function,
     this.reseting = false;
 
-    this.mobx = mobx;
-
     // @observable
     this.substores = {};
 
