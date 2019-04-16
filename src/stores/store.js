@@ -25,7 +25,11 @@ export default class GlobalStore {
       if (changeObject.type === "update" && !this.reseting && storeName !== "") {
         let snap = {};
         snap[storeName] = {};
-        snap[storeName][changeObject.name] = changeObject.oldValue;
+        if (changeObject.index) {
+          snap[storeName][changeObject.index] = changeObject.oldValue;
+        } else {
+          snap[storeName][changeObject.name] = changeObject.oldValue;
+        }
         console.log("DATA:", changeObject, "\nNAME:", storeName, "\nSNAPSHOT:", snap);
         this.pushSnapshotAndSave(snap);
       }
