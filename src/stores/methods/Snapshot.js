@@ -6,6 +6,7 @@ const getNestedObject = (nestedObj, pathArr) => {
 };
 
 export function resetSnapshot(snapshot, state) {
+  console.log(snapshot, state);
   for (var store in snapshot) {
     let pathArray = store.split("/");
     var data = getNestedObject(state, pathArray);

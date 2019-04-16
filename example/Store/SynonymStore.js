@@ -1,7 +1,8 @@
-// This is to create shorthand and also show that these variables are set globally.
-var Database = Database;
+/// Globals
+/* global $ */
+/* global Database */
+
 var Mobx = Database.Mobx;
-var utils = utils;
 
 // SynonymStore
 class SynonymStore {
@@ -40,7 +41,8 @@ class SynonymStore {
  * @listens event:eventName
  * @listens className~event:eventName
  *
- * @param {(string, array.join("")), callback_function} text The text to analye as a string, will use .join("") on array.
+ * @param {string, array.join("")} text The text to analye as a string, will use .join("") on array.
+ * @param {function} _callback When the request is done, callback this function return true or false depending on how it went.
  *
  * @return {Object} Returns the suggestions, but also saves them at this.data in the class for the future.
  *
@@ -91,7 +93,34 @@ class SynonymStore {
   tagWord(text, word, startindex, endindex) {
 
   }
-
+  /**
+ * WRITE HERE
+ *
+ * Description. TODO
+ *
+ * @class
+ * @augments tagText
+ *
+ * @alias    realName
+ * @memberof namespace
+ *
+ * @see  ApiRequests.js:SAPISRequest()
+ * @link NODEJS:stores/utils/utils#SAPISRequest.
+ * @global
+ *
+ * @fires   SAPIS
+ * @options "Synonyms".
+ * @listens event:eventName
+ * @listens className~event:eventName
+ *
+ * @param {string, array.join("")} text The text to analye as a string, will use .join("") on array.
+ * @param {string} eventType jQuery event type to fire, such as click, mouseover ... etc
+ * @param {function} _callback Function that the eventType will call when it fires.
+ *
+ * @return {Object} Returns an array with each word and if synonyms exist they will insert a span into the word
+ *
+ * @decoration action
+ */
   tagText(text, eventType, callback) {
     // If raw string is sent in convert to an array for each word.
     if (typeof text === "string") { text = Database.utils.crazyTokens(text); }
@@ -102,26 +131,27 @@ class SynonymStore {
 
       if (callback) {
         // Unbind first, not to get two events firing with one click if ran multiple times.
-        // could be a regular click event "click.wordSpan" sets the namespace of the click to "wordSpan"
-        // could also be a regular mouseenter event "mouseenter.wordSpan" sets the namespace of the mouseenter to "wordSpan"
-        $(document).unbind(eventType + ".wordSpan");
-        $(document).on(eventType + ".wordSpan", ".wordSpan", callback);
+        // could be a regular click event "click.synonyms" sets the namespace of the click to "synonyms"
+        // could also be a regular mouseenter event "mouseenter.synonyms" sets the namespace of the mouseenter to "synonyms"
+        $(document).unbind(eventType + ".synonyms");
+        $(document).on(eventType + ".synonyms", ".synonyms", callback);
       }
 
       for (const index in words) {
         let synonyms = this.getSynonyms(words[index]);
         if (synonyms) {
           // Uses Jquery to create an object
-          let span = $("<span>", { "data-word-id": index, "class": "wordSpan" }).text(words[index]);
+          let span = $("<span>", { "data-word-id": index, "data-word": words[index], "class": "synonyms" }).text(words[index]);
           // Save it as HTML rather than an object, you can use Jquery parseHTML to convert it back!
           // The <div> stuff is needed because jquery is stupid, doesnt actaully get saved...
           words[index] = $("<div>").append(span.clone()).html();
         }
       }
+
       // TODO: DEBUG REMOVE!
       console.log(words);
       console.log(words.join(""));
-      $("body").innerHTML = "";
+      $("body").empty();
       $("body").append(words.join(""));
 
       return words;
@@ -144,5 +174,6 @@ class SynonymStore {
 Mobx.decorate(SynonymStore, {
   data: Mobx.observable,
   analyzeText: Mobx.action,
-  synonyms: Mobx.action
+  synonyms: Mobx.action,
+  tagText: Mobx.action
 });

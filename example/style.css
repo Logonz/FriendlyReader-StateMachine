@@ -1,4 +1,4 @@
-.wordSpan{
+.synonyms{
   border-bottom: 2px solid #FFD700;
   position: relative;
 }
@@ -27,18 +27,18 @@
   visibility: visible;
 }
 
-.wordSpan{
+.synonyms{
   border-bottom: 2px solid #FFD700;
   position: relative;
 }
 
-.wordSpan:hover{
+.synonyms:hover{
   background-color: #FFD700;
   /*-webkit-transition-duration: 0.4s;
   transition-duration: 0.4s;*/
 }
 
-.wordSpan:hover .wordtooltip{
+.synonyms:hover .wordtooltip{
     visibility: visible;
 }
 

@@ -1,6 +1,8 @@
-// This is to create shorthand and also show that these variables are set globally.
-var Database = Database;
+/// Globals
+/* global Database */
 var Mobx = Database.Mobx;
+
+// UNUSED!!!
 
 // WordStore
 class WordStore {
