@@ -18,6 +18,7 @@ export default class GlobalStore {
 
     // Observe all values in the store
     this.dispatch = deepObserve(this.substores, (changeObject, storeName) => {
+      // console.log("STORE: changeObject.type:", changeObject.type, "NAME:", storeName);
       // We do not want snapshot on type ADD due to it being an inital state.
       // this.reseting is a way to hinder the function from recording snapshot when reseting the State
       // storename !== "" do not snapshot the addition or removal of stores.
