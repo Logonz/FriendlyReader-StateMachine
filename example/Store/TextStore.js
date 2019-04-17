@@ -6,13 +6,8 @@ var Mobx = Database.Mobx;
 class TextStore {
   constructor(text) {
     // @observable
-    this.tokenizedText = Database.utils.crazyTokens(text);
+    this.tokenizedText = Database.utils.tokenizeText(text);
     console.log(this.tokenizedText);
-  }
-
-  newText(text) {
-    console.log("newText");
-    this.tokenizedText = Database.utils.crazyTokens(text);
   }
 
   // if someone sets this.tokenizedText directly, run this function also. (this.tokenizedText = XXX)
@@ -21,9 +16,29 @@ class TextStore {
     this.newText(text);
   }
 
+  // THIS IS NOT A FUNCTION usage "TextStore.text" just like a variable
   get text() {
     console.log("retriving class\n", this.tokenizedText[0]);
     return this.tokenizedText.join("");
+  }
+
+  // enables TextStore.text = " hej jag heter david", use like a variable
+  set text(text) {
+    console.log("text");
+    this.newText(text);
+  }
+
+  // Sets the text
+  newText(text) {
+    console.log("newText");
+    // If it's a string, split it into words
+    if (typeof text === "string") {
+      this.tokenizedText = Database.utils.tokenizeText(text);
+    }
+    // If it's an object just save it, PS. Keep in mind to have the same format array[index] = word
+    if (typeof text === "object") {
+      this.tokenizedText = text;
+    }
   }
 
   // @action
