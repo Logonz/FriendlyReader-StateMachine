@@ -26,6 +26,10 @@ export function SAPISRequest(data, callback, stillettOptions) {
         console.log("REQUEST SUCCESS:\n", body);
         callback(body);
       } else {
+        let errObj = {};
+        errObj.res = res;
+        errObj.body = body;
+        callback(errObj);
         console.error("SAPIS REQUEST ERROR:\n", body);
       }
     });
