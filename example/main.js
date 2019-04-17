@@ -13,7 +13,11 @@ function tagTest() {
     let intId = parseInt($(this).data("word-id"));
     let word = $(this).data("word");
     if (event.type === "mouseenter") {
-      // Does the child already exist? If not, create else do nothing!
+      // Does the child already exist? Remove it to refresh the elements.
+      if ($(this).children(".wordtooltip").length) {
+        $(this).children(".wordtooltip").remove();
+      }
+      // Create the element if it doesn't exist.
       if (!$(this).children(".wordtooltip").length) {
         // Create the tooltip in code and Destroy the tooltip when leaving
         let div = $("<div>", { "class": "wordtooltip" }).on("mouseleave", function(event) {
@@ -53,7 +57,7 @@ function tagTest() {
 }
 
 function testanalyze() {
-  _GS.Symstore.analyzeText(_GS.TextStore.text);
+  return _GS.Symstore.analyzeText(_GS.TextStore.text);
 }
 
 $(document).ready(function () {
