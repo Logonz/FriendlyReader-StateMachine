@@ -23,8 +23,9 @@ function tagTest() {
         let div = $("<div>", { "class": "wordtooltip" }).on("mouseleave", function(event) {
           $(this).remove();
         });
-        // Add the words and a click handler.
-        let callback = function(event) {
+
+        // This is the click handler callback.
+        let _callback = function(event) {
           let id = $(this).data("word-id");
           let synonym = $(this).data("synonym");
 
@@ -33,21 +34,26 @@ function tagTest() {
           // You can just change the data but synonyms might not exist for the new word.
           parentSpan.attr("data-word", synonym);
           parentSpan.text(synonym);
-          // Or you can just unwrap the span to remove all the data (Adviceable)
+          // Or you can just unwrap the span to remove all the data (Adviceable due to not having the synonyms for the new word)
           parentSpan.contents().unwrap();
 
           console.log("Clicked tooltip: Word-Id:", id, "Synonym:", synonym, "Event:", event, "this:", $(this));
         };
 
+        // Get three synoynms for the word
         let synonyms = _GS.Symstore.getSynonyms(word, 3);
+        // Create three elements, one for each synonym and set the text and click callback
         for (const index in synonyms) {
-          div.append($("<div>", { "class": "word-wrapper", "data-word-id": intId, "data-synonym": synonyms[index].synonym }).text(synonyms[index].synonym).click(callback));
+          div.append($("<div>", { "class": "word-wrapper", "data-word-id": intId, "data-synonym": synonyms[index].synonym }).text(synonyms[index].synonym).click(_callback));
         }
+        // Append the wordtooltip to the synonyms span
         $(this).append(div);
       }
     }
-    // _GS.TextStore.setWord(intId, "TEST")
   });
+
+  // The words variable is now an array with all the words and their respective index in HTML code
+  // Just use words.join("") to get a free flowing text or use the array for some other purpose.
 
   // TODO: DEBUG REMOVE!
   console.log(words);
@@ -58,6 +64,11 @@ function tagTest() {
 
 function testanalyze() {
   return _GS.Symstore.analyzeText(_GS.TextStore.text);
+}
+
+function testReset() {
+  _GS.resetState();
+  tagTest();
 }
 
 $(document).ready(function () {

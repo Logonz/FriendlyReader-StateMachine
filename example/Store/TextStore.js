@@ -42,7 +42,7 @@ class TextStore {
   }
 
   /**
-  * Enables TextStore.text = " hej jag heter david", use like a variable.
+  * Enables TextStore.text = " hej jag heter david" TL;DR use like a variable.
   *
   * Description TODO.
   *
