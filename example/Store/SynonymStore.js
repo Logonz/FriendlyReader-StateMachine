@@ -7,14 +7,16 @@ var Mobx = Database.Mobx;
 // SynonymStore
 class SynonymStore {
   constructor() {
+    // Metadata information, these are not observed for state-transition
     this.requesting = false;
     this.lastrequestdate = Date.now();
     this.lastfailed = false;
-
-    // @observable
-    this.data = {};
     this.options = {};
 
+    // @observable data, this will fire on state transistions, it is made observable at the bottom of this document!
+    this.data = {};
+
+    // You can add reactions to specific events but only to observable variables, Google Mobx reaction for documentation.
     Mobx.reaction(() => this.data, data => console.log("SynonymStore: New data", this.data));
 
     // Does not work due to not being an observable
@@ -29,7 +31,7 @@ class SynonymStore {
  * @see  ApiRequests.js:SAPISRequest()
  * @link NODEJS:stores/utils/utils#SAPISRequest.
  *
- * @param {string, array.join("")} text The text to analye as a string, will use .join("") on array.
+ * @param {string} text The text to analye as a string, will use .join("") on array.
  * @param {function} _callback When the request is done, callback this function return true or false depending on how it went.
  *
  * @return {Object} Returns the suggestions, but also saves them at this.data in the class for the future.

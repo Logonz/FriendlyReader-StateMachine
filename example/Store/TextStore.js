@@ -4,31 +4,67 @@ var Mobx = Database.Mobx;
 
 // TextStore
 class TextStore {
+  // The constructor takes a text as argument
   constructor(text) {
     // @observable
-    this.tokenizedText = Database.utils.tokenizeText(text);
+    this.tokenizedText = null;
+
+    // Use local function to set the data.
+    this.newText(text);
+
     console.log(this.tokenizedText);
   }
 
-  // if someone sets this.tokenizedText directly, run this function also. (this.tokenizedText = XXX)
+  /**
+  * if someone sets this.tokenizedText directly, run this function also. (this.tokenizedText = XXX).
+  *
+  * Description: see newText function.
+  *
+  * @param {string} text The text to set as a string, will use .join("") on array.
+  *
+  */
   set tokenizedText(text) {
     console.log("tokenizedText");
     this.newText(text);
   }
 
-  // THIS IS NOT A FUNCTION usage "TextStore.text" just like a variable
+  /**
+  * THIS IS NOT A FUNCTION usage "TextStore.text" just like a variable.
+  *
+  * Description TODO.
+  *
+  * @param {string} text The text to set as a string, will use .join("") on array.
+  *
+  * @decoration computed
+  */
   get text() {
     console.log("retriving class\n", this.tokenizedText[0]);
     return this.tokenizedText.join("");
   }
 
-  // enables TextStore.text = " hej jag heter david", use like a variable
+  /**
+  * Enables TextStore.text = " hej jag heter david", use like a variable.
+  *
+  * Description TODO.
+  *
+  * @param {string} text The text to set as a string, will use .join("") on array.
+  *
+  * @decoration computed
+  */
   set text(text) {
     console.log("text");
     this.newText(text);
   }
 
-  // Sets the text
+  /**
+  * The text to set as a string, will use .join("") on array.
+  *
+  * Description TODO.
+  *
+  * @param {string} text The text to set as a string, will use .join("") on array.
+  *
+  * @decoration action
+  */
   newText(text) {
     console.log("newText");
     // If it's a string, split it into words
@@ -41,11 +77,13 @@ class TextStore {
     }
   }
 
+  // unused, but should work
   // @action
   setWord(id, text) {
     this.tokenizedText[id] = text;
   }
 
+  // unused, but should work
   // @action
   getWord(id) {
     if (id in this.tokenizedText) {

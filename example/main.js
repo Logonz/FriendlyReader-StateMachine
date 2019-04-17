@@ -6,7 +6,7 @@
 /* global TextStore */
 
 var _GS = null; // GlobalStore
-function test() {
+function tagTest() {
   $("body").empty();
   let words = _GS.Symstore.tagText(_GS.TextStore.tokenizedText, "mouseenter", function(event) {
     let parentSpan = $(this);
@@ -19,7 +19,6 @@ function test() {
         let div = $("<div>", { "class": "wordtooltip" }).on("mouseleave", function(event) {
           $(this).remove();
         });
-
         // Add the words and a click handler.
         let callback = function(event) {
           let id = $(this).data("word-id");
@@ -72,7 +71,7 @@ $(document).ready(function () {
   let data = "Det är inte bara vid datum med efterföljande månadsangivelse som det räcker med rena siffror för att ange ordningstal. Även i andra sammanhang kan det bli aktuellt. En av mina böcker har just kommit ut i en femte upplaga. Detta kan i formella sammanhang skrivas: 5 uppl. Skrivsättet används allmänt på böckers titelsidor och i uppgifter inom parentes i recensioner till exempel.";
 
   let instance = new SynonymStore();
-  _GS.addStore("Symstore", instance);
+  _GS.addStore("Symstore", new SynonymStore());
   // _GS.Symstore.analyzeText(data);
 
   ///  Automatic way to get a response
@@ -84,7 +83,7 @@ $(document).ready(function () {
   _GS.addStore("TextStore", new TextStore(data));
 
   _GS.TextStore.newText(data);
-  test();
+  tagTest();
   /* _GS.Symstore.tagText(_GS.TextStore.tokenizedText, "mouseenter", function(event) {
     let parentSpan = $(this);
     let intId = parseInt($(this).data("word-id"));
