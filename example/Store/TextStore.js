@@ -12,7 +12,7 @@ class TextStore {
     // Use local function to set the data.
     this.newText(text);
 
-    console.log(this.tokenizedText);
+    console.log("TextStore Constructor: ", this.tokenizedText);
   }
 
   /**
@@ -38,7 +38,6 @@ class TextStore {
   * @decoration computed
   */
   get text() {
-    console.log("retriving class\n", this.tokenizedText[0]);
     return this.tokenizedText.join("");
   }
 
