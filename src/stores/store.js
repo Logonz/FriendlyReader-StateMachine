@@ -8,6 +8,8 @@ import UndoStore from "./UndoStore.js";
  * This file is designed to funnel the global state of the application, accessible via the @observable substores object.
  */
 
+// TODO: https://github.com/mobxjs/mobx/blob/gh-pages/docs/refguide/api.md#configure
+
 export default class GlobalStore {
   constructor() {
     // After this global store class is instatiated via the constructor function,
@@ -55,6 +57,9 @@ export default class GlobalStore {
       console.log("CURRENT:", _.cloneDeep(this.substores));
       UndoStore.popSnapshot();
     }
+    else{
+      console.log("MOBX - No state to reset to.")
+    }
     this.reseting = false;
   }
 
@@ -63,6 +68,7 @@ export default class GlobalStore {
       this.substores[name] = object;
       this[name] = this.substores[name];
       console.log("Added store: ", name, object);
+      UndoStore.storeLength += 1;
       return true;
     }
     console.error("Store with name already exists!", name);
