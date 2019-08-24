@@ -7,6 +7,7 @@ package-lock.json
 .tern-project
 dist/
 .atom-build.yml
+.vscode/
 
 ### Node ###
 # Logs
