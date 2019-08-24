@@ -24,7 +24,11 @@ export default class GlobalStore {
       // We do not want snapshot on type ADD due to it being an inital state.
       // this.reseting is a way to hinder the function from recording snapshot when reseting the State
       // storename !== "" do not snapshot the addition or removal of stores.
-      if (changeObject.type === "update" && !this.reseting && storeName !== "") {
+      if (
+        changeObject.type === "update" &&
+        !this.reseting &&
+        storeName !== ""
+      ) {
         let snap = {};
         snap[storeName] = {};
         if (changeObject.index) {
@@ -32,7 +36,14 @@ export default class GlobalStore {
         } else {
           snap[storeName][changeObject.name] = changeObject.oldValue;
         }
-        console.log("DATA:", changeObject, "\nNAME:", storeName, "\nSNAPSHOT:", snap);
+        console.log(
+          "DATA:",
+          changeObject,
+          "\nNAME:",
+          storeName,
+          "\nSNAPSHOT:",
+          snap
+        );
         this.pushSnapshotAndSave(snap);
       }
     });
@@ -40,7 +51,12 @@ export default class GlobalStore {
     this.pushSnapshotAndSave = snapshot => {
       if (snapshot) {
         UndoStore.pushSnapshot(snapshot);
-        console.info("snapshot saved!", snapshot, "\ncurrentState:", _.cloneDeep(this.substores));
+        console.info(
+          "snapshot saved!",
+          snapshot,
+          "\ncurrentState:",
+          _.cloneDeep(this.substores)
+        );
       } else {
         console.log("no snapshot saved!", snapshot);
       }
@@ -52,15 +68,22 @@ export default class GlobalStore {
     let lastSnapshot = UndoStore.lastSnapshot();
     if (lastSnapshot) {
       // here is where the entire application state is reset based on the last snapshot, see Snapshot.js
-      console.log("reset state!\nSNAPSHOT:", lastSnapshot, "\nBEFORE:", _.cloneDeep(this.substores));
+      console.log(
+        "reset state!\nSNAPSHOT:",
+        lastSnapshot,
+        "\nBEFORE:",
+        _.cloneDeep(this.substores)
+      );
       this.substores = resetSnapshot(lastSnapshot, this.substores);
       console.log("CURRENT:", _.cloneDeep(this.substores));
       UndoStore.popSnapshot();
-    }
-    else{
-      console.log("MOBX - No state to reset to.")
+      this.reseting = false;
+      return true;
+    } else {
+      console.log("MOBX - No state to reset to.");
     }
     this.reseting = false;
+    return false;
   }
 
   addStore(name, object) {
@@ -68,7 +91,7 @@ export default class GlobalStore {
       this.substores[name] = object;
       this[name] = this.substores[name];
       console.log("Added store: ", name, object);
-      UndoStore.storeLength += 1;
+      UndoStore.storeLength = UndoStore.snapshots.length;
       return true;
     }
     console.error("Store with name already exists!", name);

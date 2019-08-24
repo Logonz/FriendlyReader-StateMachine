@@ -10,8 +10,8 @@ class UndoStore {
 
   // @action
   lastSnapshot() {
-    console.log("MOBX - Total Snapshots", this.snapshots.length-this.storeLength);
-    if (this.snapshots.length > this.storeLength) {
+    console.log("MOBX - Total Snapshots:", this.snapshots.length, this.storeLength);
+    if (this.snapshots.length > 0) {
       return this.snapshots[0];
     } else {
       return null;
@@ -22,15 +22,15 @@ class UndoStore {
   pushSnapshot(snap) {
     if (snap) {
       this.snapshots.unshift(snap);
-      console.log("MOBX - Adding Snapshot", snap);
+      console.log("MOBX - Adding Snapshot Total:", this.snapshots.length, this.storeLength, snap);
       // console.log(this.snapshots[0], "pushed");
     } else console.log("undefined snap");
   }
 
   // @action
   popSnapshot() {
-    console.log("MOBX - Popped snapshot", this.snapshots[0]);
     this.snapshots.shift();
+    console.log("MOBX - Popped snapshot Total:", this.snapshots.length, this.snapshots[0]);
   }
 }
 decorate(UndoStore, {
