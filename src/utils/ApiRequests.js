@@ -21,7 +21,7 @@ export function SAPISRequest(data, callback, stillettOptions) {
     res.on("data", function(chunk) {
       data.push(chunk);
     }).on("end", function() {
-      body = JSON.parse(data[0]);
+      body = JSON.parse(data.join(""));
       if (res.statusCode >= 200 && res.statusCode < 300) {
         console.log("REQUEST SUCCESS:\n", body);
         callback(body);
